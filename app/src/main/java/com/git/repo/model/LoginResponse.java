@@ -10,13 +10,13 @@ public class LoginResponse implements Parcelable{
     @SerializedName("token_type")
     public String token_type;
     @SerializedName("scope")
-    public int scope;
+    public String scope;
     @SerializedName("access_token")
     public String access_token;
 
     protected LoginResponse(Parcel in) {
         token_type = in.readString();
-        scope = in.readInt();
+        scope = in.readString();
         access_token = in.readString();
     }
 
@@ -40,7 +40,7 @@ public class LoginResponse implements Parcelable{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(token_type);
-        dest.writeInt(scope);
+        dest.writeString(scope);
         dest.writeString(access_token);
     }
 }

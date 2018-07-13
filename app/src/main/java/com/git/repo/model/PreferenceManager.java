@@ -11,7 +11,7 @@ public class PreferenceManager {
     //Preference keys
     public static final String PREF_CODE = "pref_code";
     public static final String PREF_ACCESS_TOKEN = "access_token";
-
+    public static final String PREF_ACCESS_TOKEN_TYPE = "access_token_type";
 
     public static Boolean getBooleanPrefs(Context ctx, String key) {
         return GetGitRepoApp.getSharedPreference(ctx).getBoolean(key, false);

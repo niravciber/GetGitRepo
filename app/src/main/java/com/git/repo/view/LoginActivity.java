@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.git.repo.R;
 import com.git.repo.databinding.ActivityLoginBinding;
+import com.git.repo.model.LoginResponse;
 import com.git.repo.model.PreferenceManager;
 import com.git.repo.network.RetrofitClient;
 import com.git.repo.viewmodel.LoginViewModel;
@@ -31,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         binding.setListner(loginViewModel);
         loginViewModel.getWebLivedata().observe(this,observer);
+        loginViewModel.getLoginResponseLivedata().observe(this,loginResponseObserver);
     }
 
 
@@ -49,8 +51,9 @@ public class LoginActivity extends AppCompatActivity {
             String code = uri.getQueryParameter("code");
             Toast.makeText(this,"code gotcha"+code,Toast.LENGTH_SHORT).show();
             PreferenceManager.set(this,PreferenceManager.PREF_CODE,code);
-
+            loginViewModel.getAccessToken(code);
         }
+        getIntent().setData(null);
     }
 
     Observer<Boolean> observer = aBoolean -> {
@@ -59,5 +62,10 @@ public class LoginActivity extends AppCompatActivity {
         startActivityForResult(browserIntent,101);
     };
 
+    Observer<LoginResponse> loginResponseObserver = loginResponse -> {
+        PreferenceManager.set(this,PreferenceManager.PREF_ACCESS_TOKEN,loginResponse.access_token);
+        PreferenceManager.set(this,PreferenceManager.PREF_ACCESS_TOKEN_TYPE,loginResponse.token_type);
+        startActivity(new Intent(this,MainActivity.class));
+    };
 }
 
