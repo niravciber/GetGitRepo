@@ -20,7 +20,10 @@ import android.widget.TextView;
 import com.git.repo.R;
 import com.git.repo.Utils;
 import com.git.repo.databinding.ActivityMainBinding;
+import com.git.repo.model.Repo;
 import com.git.repo.viewmodel.MainViewModel;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -30,33 +33,38 @@ import static android.view.View.GONE;
 
 public class MainActivity extends DaggerAppCompatActivity implements EditText.OnEditorActionListener {
 
-    private MainViewModel mainViewModel;
+    MainViewModel mainViewModel;
     private ActivityMainBinding binding;
     @Inject
     ViewModelProvider.Factory viewmodelFactory;
-
+    @Inject
+    RepoAdapter repoAdapter;
+    @Inject
+    LinearLayoutManager linearLayoutManager;
+    @Inject
+    DividerItemDecoration dividerItemDecoration;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
         mainViewModel = ViewModelProviders.of(this,viewmodelFactory).get(MainViewModel.class);
         //setToolbar();
-        binding.recyleView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        binding.recyleView.setLayoutManager(new LinearLayoutManager(this));
-        binding.recyleView.setAdapter(new RepoAdapter(this,mainViewModel));
+        binding.recyleView.setAdapter(repoAdapter);
+        binding.recyleView.addItemDecoration(dividerItemDecoration);
+        binding.recyleView.setLayoutManager(linearLayoutManager);
+
         mainViewModel.fetchRepos();
         binding.editTextSearch.setOnEditorActionListener(this);
         Utils.hideKeyboard(this,binding.editTextSearch);
-        mainViewModel.getLoading().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(@Nullable Boolean aBoolean) {
-                if(aBoolean){
-                    binding.progressBar.setVisibility(View.VISIBLE);
-                }else{
-                    binding.progressBar.setVisibility(GONE);
-                }
+        mainViewModel.getLoading().observe(this, aBoolean -> {
+            if(aBoolean){
+                binding.progressBar.setVisibility(View.VISIBLE);
+            }else{
+                binding.progressBar.setVisibility(GONE);
             }
         });
+
+        mainViewModel.getRepoLivedata().observe(this, repoAdapter::setRepoList);
     }
 
     @Override

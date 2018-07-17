@@ -8,8 +8,10 @@ import android.preference.PreferenceManager;
 
 import com.git.repo.di.ViewModelModule;
 import com.git.repo.network.GithubApi;
+import com.git.repo.view.RepoAdapter;
 
 import javax.inject.Named;
+import javax.inject.Scope;
 import javax.inject.Singleton;
 
 import dagger.Module;

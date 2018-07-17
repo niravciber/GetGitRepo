@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.git.repo.view.LoginActivity;
 import com.git.repo.view.MainActivity;
+import com.git.repo.view.MainActivityModule;
 import com.git.repo.view.SplashActivity;
 
 import dagger.Module;
@@ -18,7 +19,7 @@ public abstract class ActivityBuilder {
     @ContributesAndroidInjector
     public abstract LoginActivity bindLoginActivity();
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = MainActivityModule.class)
     public abstract MainActivity bindMainActivity();
 
 

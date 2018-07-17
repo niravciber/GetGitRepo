@@ -24,15 +24,9 @@ import java.util.Objects;
 
 public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.RepoViewholder> {
 
-    private LifecycleOwner lifecycleOwner;
-    private MainViewModel mainViewModel;
     private  List<Repo> repoList = Collections.emptyList();
 
-    RepoAdapter(LifecycleOwner owner,MainViewModel mainViewModel){
-        this.lifecycleOwner = owner;
-        this.mainViewModel = mainViewModel;
-        mainViewModel.getRepoLivedata().observe(owner, repos -> setRepoList(repos));
-    }
+    RepoAdapter(){ }
 
     @NonNull
     @Override

@@ -96,7 +96,7 @@ public class MainViewModel extends ViewModel {
         }
     }
 
-    public LiveData<List<Repo>> getRepoLivedata() {
+    public MutableLiveData<List<Repo>> getRepoLivedata() {
         return repoLivedata;
     }
 
