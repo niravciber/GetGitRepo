@@ -2,10 +2,10 @@
 
 
 <layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="repoItem"
             type="com.git.repo.model.Repo" />
@@ -21,20 +21,45 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:src="@drawable/ic_star"/>
+    
+    <ImageView
+        android:id="@+id/imageView_avtar"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_alignParentLeft="true"
+        app:imageUrl="@{repoItem.permissons.photo}"/>
 
     <TextView
         android:id="@+id/textViewStar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@id/imageView_start"
-        android:text="@{String.valueOf(repoItem.starts)}" />
-
+        android:layout_below="@+id/imageView_start"
+        android:layout_alignParentRight="true"
+        android:paddingRight="5dp"
+        android:text="@{String.valueOf(repoItem.starts)}"
+        />
     <TextView
         android:id="@+id/textView_name"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@{repoItem.name}"/>
+        android:layout_alignParentTop="true"
+        android:paddingLeft="7dp"
+        android:layout_toRightOf="@id/imageView_avtar"
+        android:layout_toLeftOf="@+id/textViewStar"
+        android:text="@{repoItem.name}"
+        android:textSize="18sp" />
+
+
+    <TextView
+        android:id="@+id/textView_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/imageView_avtar"
+        android:paddingTop="10dp"
+        android:layout_toLeftOf="@+id/textViewStar"
+        android:text="@{repoItem.description}"
+        android:textSize="12sp" />
 
 
 </RelativeLayout>

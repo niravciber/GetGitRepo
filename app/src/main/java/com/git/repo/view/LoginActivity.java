@@ -1,8 +1,7 @@
 package com.git.repo.view;
 
-import android.app.Activity;
-import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -10,26 +9,32 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Toast;
 
 import com.git.repo.R;
 import com.git.repo.databinding.ActivityLoginBinding;
 import com.git.repo.model.LoginResponse;
-import com.git.repo.model.PreferenceManager;
+import com.git.repo.model.PreferenceHelper;
 import com.git.repo.network.RetrofitClient;
 import com.git.repo.viewmodel.LoginViewModel;
 
-public class LoginActivity extends AppCompatActivity {
+import javax.inject.Inject;
+
+import dagger.android.support.DaggerAppCompatActivity;
+
+public class LoginActivity extends DaggerAppCompatActivity {
 
     private ActivityLoginBinding binding;
     private LoginViewModel loginViewModel;
-
+    @Inject
+    PreferenceHelper preferenceHelper;
+    @Inject
+    ViewModelProvider.Factory viewmodelFactory;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_login);
-        loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+        loginViewModel = ViewModelProviders.of(this,viewmodelFactory).get(LoginViewModel.class);
         binding.setListner(loginViewModel);
         loginViewModel.getWebLivedata().observe(this,observer);
         loginViewModel.getLoginResponseLivedata().observe(this,loginResponseObserver);
@@ -50,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
         if(uri!=null && uri.toString().startsWith(RetrofitClient.REDIRECT_URI)) {
             String code = uri.getQueryParameter("code");
             Toast.makeText(this,"code gotcha"+code,Toast.LENGTH_SHORT).show();
-            PreferenceManager.set(this,PreferenceManager.PREF_CODE,code);
+            preferenceHelper.set(PreferenceHelper.PREF_CODE,code);
             loginViewModel.getAccessToken(code);
         }
         getIntent().setData(null);
@@ -63,8 +68,8 @@ public class LoginActivity extends AppCompatActivity {
     };
 
     Observer<LoginResponse> loginResponseObserver = loginResponse -> {
-        PreferenceManager.set(this,PreferenceManager.PREF_ACCESS_TOKEN,loginResponse.access_token);
-        PreferenceManager.set(this,PreferenceManager.PREF_ACCESS_TOKEN_TYPE,loginResponse.token_type);
+        preferenceHelper.set(PreferenceHelper.PREF_ACCESS_TOKEN,loginResponse.access_token);
+        preferenceHelper.set(PreferenceHelper.PREF_ACCESS_TOKEN_TYPE,loginResponse.token_type);
         startActivity(new Intent(this,MainActivity.class));
     };
 }

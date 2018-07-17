@@ -1,28 +1,19 @@
 package com.git.repo;
 
-import android.app.Application;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import com.git.repo.di.component.Appcomponent;
+import com.git.repo.di.component.DaggerAppcomponent;
 
-public class GetGitRepoApp extends Application {
+import dagger.android.AndroidInjector;
+import dagger.android.DaggerApplication;
 
-    private static SharedPreferences mSharedPreference;
-    private  static GetGitRepoApp mainInstance;
+public class GetGitRepoApp extends DaggerApplication{
+
     @Override
-    public void onCreate() {
-        super.onCreate();
-        mainInstance = this;
+    protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
+        Appcomponent appcomponent= DaggerAppcomponent.builder().application(this).build();
+        appcomponent.inject(this);
+        return appcomponent;
     }
 
-    public static SharedPreferences getSharedPreference(Context context){
-        if (mSharedPreference == null) {
-            mSharedPreference = PreferenceManager.getDefaultSharedPreferences(context);
-        }
-        return mSharedPreference;
-    }
 
-    public static GetGitRepoApp getMainInstance(){
-        return mainInstance;
-    }
 }

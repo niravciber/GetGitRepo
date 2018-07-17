@@ -66,7 +66,7 @@ public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.RepoViewholder
             super(itemView.getRoot());
             this.binding = itemView;
             itemView.getRoot().setOnClickListener(v -> {
-                Toast.makeText(v.getContext(),"Click",Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(),"Coming soon",Toast.LENGTH_SHORT).show();
             });
         }
 

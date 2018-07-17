@@ -5,7 +5,11 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.security.acl.Owner;
+
 public class Repo {
+
+    public Repo(){}
     @SerializedName("id")
     int id;
     @SerializedName("name")
@@ -16,7 +20,16 @@ public class Repo {
     String description;
     @SerializedName("stargazers_count")
     String starts;
+    @SerializedName("owner")
+    Permissons permissons;
 
+    public Permissons getPermissons() {
+        return permissons;
+    }
+
+    public void setPermissons(Permissons permissons) {
+        this.permissons = permissons;
+    }
 
     public int getId() {
         return id;
@@ -57,4 +70,19 @@ public class Repo {
     public void setStarts(String starts) {
         this.starts = starts;
     }
+
+
+    public static class Permissons{
+        @SerializedName("avatar_url")
+            String photo;
+
+        public String getPhoto() {
+            return photo;
+        }
+
+        public void setPhoto(String photo) {
+            this.photo = photo;
+        }
+    }
+
 }
