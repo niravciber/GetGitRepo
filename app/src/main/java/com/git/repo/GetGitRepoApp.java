@@ -10,6 +10,7 @@ public class GetGitRepoApp extends DaggerApplication{
 
     @Override
     protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
+        //Happy coding
         Appcomponent appcomponent= DaggerAppcomponent.builder().application(this).build();
         appcomponent.inject(this);
         return appcomponent;
